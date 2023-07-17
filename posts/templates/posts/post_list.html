@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main">
+    <h1 class="main-title">
+        {{ title }}
+    </h1>
+
+
+    <!-- 게시판 리스트 -->
+    {% if posts %}
+    <table class="table table-bordered">
+        <colgroup>
+            <col style="width: 40px">
+            <col style="width: 60px">
+            <col>
+            <col style="width: 100px">
+            <col style="width: 120px">
+            <col style="width: 100px">
+        </colgroup>
+        <thead class="table-light">
+            <tr>
+                <th>제목</th>
+                <th>내용</th>
+                <th>작성자</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td><a href="{% url 'blog:detail' pk=post.pk %}" class="btn">{{ post.title }}</a></td>
+                <td>{{ post.content }}</td>
+                <td>{{ post.writer }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>작성된 게시물이 없습니다.</p>
+    {% endif %}
+        <!-- //게시판 리스트 -->
+</div>
+{% endblock %}
