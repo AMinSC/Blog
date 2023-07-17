@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main">
+    <!-- 글쓰기 페이지 -->
+    <h2 class="main-title">글쓰기</h2>
+    <p class="main-desc">내용을 입력 해주세요.</p>
+
+    <form action="{% url 'blog:write' %}" method="post">
+        {% csrf_token %}
+        <table class="table write">
+            <colgroup>
+                <col style="width: 120px">
+                <col>
+            </colgroup>
+                {{ form.as_p }}
+        <input type="submit" class="btn btn btn-success">
+    </form>
+
+        <!--  //글쓰기 페이지 -->
+    </div>
+{% endblock %}
