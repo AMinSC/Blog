@@ -47,3 +47,40 @@ class PostWrite(LoginRequiredMixin, View):
             'form': form
         }
         return render(request, 'posts/post_write.html')
+
+
+class PostEdit(View):
+    def get(self, request, post_id):
+        post = Posts.objects.get(pk=post_id)
+        form = PostForm(initial={
+            'title': post.title,
+            'content': post.content,
+            'category': post.category,
+        })
+        context = {
+            'form': form,
+            'post': post
+        }
+        return render(request, 'posts/post_edit.html', context)
+
+    def post(self, request, post_id):
+        post = Posts.objects.get(pk=post_id)
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post.title = form.cleaned_data['title']
+            post.content = form.cleaned_data['content']
+            post.save()
+            return redirect('blog:detail', post_id=post_id)
+        
+        form.add_error('폼이 유효하지 않습니다.')
+        context = {
+            'form': form
+        }
+        return render(request, 'posts/post_list.html', context)
+
+
+class PostDelete(View):
+    def post(self, request, post_id):
+        post = Posts.objects.get(pk=post_id)
+        post.delete()
+        return redirect('blog:list')

@@ -3,16 +3,17 @@
 {% block content %}
     <h1>제목: {{ post.title }}</h1>
 
-    {% if post_writer == request.user %}
-    <a href="{% url 'blog:edit' pk=post_id %}" class="btn">수정</a>
-    <form action="{% url 'blog:delete' post_id=post_id %}" method="post">
+    {% if post.writer == request.user %}
+    <a href="{% url 'blog:edit' post.id %}" class="btn">수정</a>
+    <form action="{% url 'blog:delete' post.id %}" method="post">
         {% csrf_token %}
         <input type="submit" value="삭제" class="btn">
     </form>
+    <a href="{% url 'blog:list' %}">돌아가기</a>
     {% endif %}
 
     <p>내용: {{ post.content }}</p>
-    <!-- <p>작성자: {{ post_writer }}</p> -->
+    <p>작성자: {{ post.writer }}</p>
     <p>작성일: {{ post.created_at }}</p>
     <hr>
 {% endblock %}
