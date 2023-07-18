@@ -89,10 +89,26 @@ class PostDelete(View):
 
 class PostSerach(View):
     def get(self, request, tag):
-        if tag == 'default':
+        if not tag:
             return redirect('blog:list')
+        tag = request.GET.get('tag', '')
+        print(tag)
         category = request.GET.get('category', '')
-        posts = Posts.objects.filter(title__contains=tag, category__exact=category)  # match
+        print(category)
+        # posts = Posts.objects.filter(title__contains=tag, category__exact=category)  # match
+
+        posts = Posts.objects.all()
+        if tag:
+            posts = posts.filter(title__contains=tag)
+        if category:
+            posts = posts.filter(category=category)
+        
+        sort_order = request.GET.get('sort', 'newest')
+        if sort_order == 'newest':
+            posts = posts.order_by('-created_at')
+        else:
+            posts = posts.order_by('created_at') 
+        
         context = {
             'title': 'Blog',
             'posts': posts,
