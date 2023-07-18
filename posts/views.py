@@ -12,6 +12,7 @@ class PostView(View):
         context = {
             'title': 'Blog',
             'posts': posts,
+            'search': ''
         }
         return render(request, 'posts/post_list.html', context)
     
@@ -84,3 +85,16 @@ class PostDelete(View):
         post = Posts.objects.get(pk=post_id)
         post.delete()
         return redirect('blog:list')
+
+
+class PostSerach(View):
+    def get(self, request, tag):
+        if tag == 'default':
+            return redirect('blog:list')
+        category = request.GET.get('category', '')
+        posts = Posts.objects.filter(title__contains=tag, category__exact=category)  # match
+        context = {
+            'title': 'Blog',
+            'posts': posts,
+        }
+        return render(request, 'posts/post_list.html', context)

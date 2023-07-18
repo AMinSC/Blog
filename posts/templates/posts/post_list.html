@@ -6,6 +6,25 @@
         {{ title }}
     </h1>
 
+    <div>
+        <label for="category" class="a11y-hidden">카테고리</label>
+        <select id="category" name="category">
+            <option value="">전체</option>
+            <option value="Notice">공지사항</option>
+            <option value="General">일반</option>
+        </select>
+        <form class="search-form" method="get" action="{% url 'blog:search' 'default' %}">
+            <label for="tag" class="a11y-hidden">Search</label>
+            <input id="tag" type="search" name="tag" placeholder="Please enter a search term">
+            <button type="submit">검색</button>
+        </form>
+        
+        <label for="sort" class="a11y-hidden">정렬</label>
+        <select id="sort">
+            <option value="newest">날짜 내림차순</option>
+            <option value="oldest">날짜 오름차순</option>
+        </select>
+    </div>
 
     <!-- 게시판 리스트 -->
     {% if posts %}
@@ -24,6 +43,7 @@
                 <th>제목</th>
                 <th>내용</th>
                 <th>작성자</th>
+                <th>일자</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +53,7 @@
                 <td><a href="{% url 'blog:detail' post_id=post.pk %}" class="btn">{{ post.title }}</a></td>
                 <td>{{ post.content }}</td>
                 <td>{{ post.writer }}</td>
+                <td>{{ post.created_at }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -42,6 +63,7 @@
     {% endif %}
     <div class="btn-group">
         <a href="{% url 'blog:write' %}" class="btn">글쓰기</a>
+        <a href="{% url 'blog:list' %}" class="btn">전체 게시글보기</a>
     </div>
 </div>
 {% endblock %}
