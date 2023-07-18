@@ -14,7 +14,7 @@ class PostView(View):
             'posts': posts,
             'search': ''
         }
-        return render(request, 'posts/post_list.html', context)
+        return render(request, 'posts/list.html', context)
     
 
 class PostDetail(View):
@@ -23,7 +23,7 @@ class PostDetail(View):
         context = {
             'post': post
         }
-        return render(request, 'posts/post_detail.html', context)
+        return render(request, 'posts/detail.html', context)
 
 
 class PostWrite(LoginRequiredMixin, View):
@@ -32,7 +32,7 @@ class PostWrite(LoginRequiredMixin, View):
         context = {
             'form': form
         }
-        return render(request, 'posts/post_write.html', context)
+        return render(request, 'posts/write.html', context)
     
     def post(self, request):
         form = PostForm(request.POST)
@@ -47,7 +47,7 @@ class PostWrite(LoginRequiredMixin, View):
         context = {
             'form': form
         }
-        return render(request, 'posts/post_write.html')
+        return render(request, 'posts/write.html')
 
 
 class PostEdit(View):
@@ -62,7 +62,7 @@ class PostEdit(View):
             'form': form,
             'post': post
         }
-        return render(request, 'posts/post_edit.html', context)
+        return render(request, 'posts/edit.html', context)
 
     def post(self, request, post_id):
         post = Posts.objects.get(pk=post_id)
@@ -77,7 +77,7 @@ class PostEdit(View):
         context = {
             'form': form
         }
-        return render(request, 'posts/post_list.html', context)
+        return render(request, 'posts/list.html', context)
 
 
 class PostDelete(View):
@@ -86,7 +86,7 @@ class PostDelete(View):
         post.delete()
         return redirect('blog:list')
 
-
+# ?뒤에 커리문 처리 예정
 class PostSerach(View):
     def get(self, request, tag):
         if not tag:
@@ -113,4 +113,4 @@ class PostSerach(View):
             'title': 'Blog',
             'posts': posts,
         }
-        return render(request, 'posts/post_list.html', context)
+        return render(request, 'posts/list.html', context)
