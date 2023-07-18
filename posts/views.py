@@ -1,116 +1,97 @@
-from django.shortcuts import render, redirect
-from django.views import View
 from django.utils import timezone
+from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Posts
 from .forms import PostForm
 
 # Create your views here.
-class PostView(View):
-    def get(self, request):
-        posts = Posts.objects.all()
-        context = {
-            'title': 'Blog',
-            'posts': posts,
-            'search': ''
-        }
-        return render(request, 'posts/list.html', context)
-    
+class PostView(ListView):
+    model = Posts
+    template_name = 'posts/list.html'
+    context_object_name = 'posts'
 
-class PostDetail(View):
-    def get(self, request, post_id):
-        post = Posts.objects.get(pk=post_id)
-        context = {
-            'post': post
-        }
-        return render(request, 'posts/detail.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Blog'
+        context['search'] = ''
+        return context
 
 
-class PostWrite(LoginRequiredMixin, View):
-    def get(self, request):
-        form = PostForm()
-        context = {
-            'form': form
-        }
-        return render(request, 'posts/write.html', context)
-    
-    def post(self, request):
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.writer = request.user
-            post.save()
-            return redirect('blog:list')
-            # return redirect('/blog/detail/' + str(post.id))
-        print(form)
-        form.add_error(None, '폼이 유효하지 않습니다.')
-        context = {
-            'form': form
-        }
-        return render(request, 'posts/write.html')
+class PostDetail(DetailView):
+    model = Posts
+    template_name = 'posts/detail.html'
+    context_object_name = 'post'
+
+    def get_object(self):
+
+        object = get_object_or_404(Posts, id=self.kwargs['post_id'])
+        return object
 
 
-class PostEdit(View):
-    def get(self, request, post_id):
-        post = Posts.objects.get(pk=post_id)
-        form = PostForm(initial={
-            'title': post.title,
-            'content': post.content,
-            'category': post.category,
-        })
-        context = {
-            'form': form,
-            'post': post
-        }
-        return render(request, 'posts/edit.html', context)
+class PostWrite(CreateView):
+    model = Posts
+    fields = ['title', 'content', 'category']
+    template_name = 'posts/write.html'
+    success_url = reverse_lazy('blog:list')
 
-    def post(self, request, post_id):
-        post = Posts.objects.get(pk=post_id)
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post.title = form.cleaned_data['title']
-            post.content = form.cleaned_data['content']
-            post.save()
-            return redirect('blog:detail', post_id=post_id)
-        
-        form.add_error('폼이 유효하지 않습니다.')
-        context = {
-            'form': form
-        }
-        return render(request, 'posts/list.html', context)
+    def form_valid(self, form):
+        form.instance.writer = self.request.user
+        return super().form_valid(form)
 
 
-class PostDelete(View):
-    def post(self, request, post_id):
-        post = Posts.objects.get(pk=post_id)
-        post.delete()
-        return redirect('blog:list')
+class PostEdit(UpdateView):
+    model = Posts
+    fields = ['title', 'content', 'category']
+    template_name = 'posts/edit.html'
+    context_object_name = 'post'
+    success_url = reverse_lazy('blog:list')
+
+    def get_object(self):
+
+        object = get_object_or_404(Posts, id=self.kwargs['post_id'])
+        return object
+
+
+class PostDelete(DeleteView):
+    model = Posts
+    success_url = reverse_lazy('blog:list')
+
+    def get_object(self):
+
+        object = get_object_or_404(Posts, id=self.kwargs['post_id'])
+        return object
 
 # ?뒤에 커리문 처리 예정
-class PostSerach(View):
-    def get(self, request, tag):
-        if not tag:
-            return redirect('blog:list')
-        tag = request.GET.get('tag', '')
-        print(tag)
-        category = request.GET.get('category', '')
-        print(category)
-        # posts = Posts.objects.filter(title__contains=tag, category__exact=category)  # match
+class PostSerach(ListView):
+    model = Posts
+    template_name = 'posts/list.html'
+    context_object_name = 'posts'
+    
+    def get_queryset(self):
+        queryset = Posts.objects.all()
 
-        posts = Posts.objects.all()
+        tag = self.request.GET.get('tag', '')
+        category = self.request.GET.get('category', '')
+
         if tag:
-            posts = posts.filter(title__contains=tag)
+            queryset = queryset.filter(title__contains=tag)
         if category:
-            posts = posts.filter(category=category)
+            queryset = queryset.filter(category=category)
         
-        sort_order = request.GET.get('sort', 'newest')
+        sort_order = self.request.GET.get('sort', 'newest')
         if sort_order == 'newest':
-            posts = posts.order_by('-created_at')
+            queryset = queryset.order_by('-created_at')
         else:
-            posts = posts.order_by('created_at') 
-        
-        context = {
-            'title': 'Blog',
-            'posts': posts,
-        }
-        return render(request, 'posts/list.html', context)
+            queryset = queryset.order_by('created_at')
+
+        print(list(queryset))
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Blog'
+        return context
