@@ -32,7 +32,7 @@ class PostDetail(DetailView):
         return object
 
 
-class PostWrite(CreateView):
+class PostWrite(LoginRequiredMixin, CreateView):
     model = Posts
     fields = ['title', 'content', 'category']
     template_name = 'posts/write.html'

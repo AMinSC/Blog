@@ -1,62 +1,48 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import CreateView
+from django.views.generic.edit import FormView
 from django.contrib.auth import authenticate, login, logout
-# from .models import User
 from .forms import RegisterForm, LoginForm
 
 
-class Registration(View):
-    def get(self, request):
+class Registration(CreateView):
+    form_class = RegisterForm
+    template_name = 'accounts/register.html'
+    success_url = reverse_lazy('accounts:login')
+
+    def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('blog:list')
-        # 회원가입 페이지
-        # 정보를 입력할 폼을 보여주어야 한다.
-        form = RegisterForm()
-        context = {
-            'form': form,
-            'title': 'User'
-        }
-        return render(request, 'accounts/register.html', context)
-    
-    def post(self, request):
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            return redirect('accounts:login')
-
+        return super().get(request, *args, **kwargs)
 
 ### Login
-class Login(View):
+class Login(FormView):
+    form_class = LoginForm
+    template_name = 'accounts/login.html'
+    success_url = reverse_lazy('blog:list')
+
+    def form_valid(self, form):
+        print(form)
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(self.request, user)
+            return super().form_valid(form)
+        else:
+            form.add_error(None, 'Invalid username or password')
+            return super().form_invalid(form)
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('blog:list')
+        return super().get(request, *args, **kwargs)
+
+
+class Logout(View):
     def get(self, request):
-        if request.user.is_authenticated:
-            return redirect('blog:list')
-        
-        form = LoginForm()
-        context = {
-            'form': form,
-            'title': 'User'
-        }
-        return render(request, 'accounts/login.html', context)
-        
-    def post(self, request):
-        if request.user.is_authenticated:
-            return redirect('blog:list')
-        
-        form = LoginForm(request, request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            email = form.cleaned_data['email']
-            user = authenticate(username=username, password=password) # True, False
-            
-            if user:
-                login(request, user)
-                return redirect('blog:list')
-            
-        # form.add_error(None, '아이디가 없습니다.')
-        
-        context = {
-            'form': form
-        }
-        
-        return render(request, 'user/user_login.html', context)
+        logout(request)
+        return redirect('blog:list')

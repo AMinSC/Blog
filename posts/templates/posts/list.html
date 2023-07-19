@@ -64,7 +64,8 @@
     <div class="btn-group">
         <a href="{% url 'blog:write' %}" class="btn">글쓰기</a>
         <a href="{% url 'blog:list' %}" class="btn">전체 게시글보기</a>
-        
+        <a href="{% url 'accounts:login' %}" class="btn">로그인</a>
+        <a href="{% url 'accounts:logout' %}" class="btn">로그아웃</a>
     </div>
 </div>
 {% endblock %}
