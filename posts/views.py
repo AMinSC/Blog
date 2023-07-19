@@ -1,6 +1,6 @@
-from django.utils import timezone
+from django.http import Http404
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -27,12 +27,22 @@ class PostDetail(DetailView):
     context_object_name = 'post'
 
     def get_object(self):
+        try:
+            object = get_object_or_404(Posts, id=self.kwargs['post_id'])
+            return object
+        except Http404:
+            return None
 
-        object = get_object_or_404(Posts, id=self.kwargs['post_id'])
-        return object
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object:
+            return render(request, 'posts/not_found.html', {})
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
 
 class PostWrite(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy('accounts:login')
     model = Posts
     fields = ['title', 'content', 'category']
     template_name = 'posts/write.html'
@@ -43,7 +53,8 @@ class PostWrite(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostEdit(UpdateView):
+class PostEdit(LoginRequiredMixin, UpdateView):
+    login_url = reverse_lazy('accounts:login')
     model = Posts
     fields = ['title', 'content', 'category']
     template_name = 'posts/edit.html'

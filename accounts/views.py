@@ -24,7 +24,6 @@ class Login(FormView):
     success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
-        print(form)
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
