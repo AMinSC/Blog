@@ -44,19 +44,20 @@ class PostDetail(DetailView):
 class PostWrite(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('accounts:login')
     model = Posts
-    fields = ['title', 'content', 'category']
+    fields = ['title', 'content', 'category', 'img']
     template_name = 'posts/write.html'
     success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
         form.instance.writer = self.request.user
+        form.save()
         return super().form_valid(form)
 
 
 class PostEdit(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('accounts:login')
     model = Posts
-    fields = ['title', 'content', 'category']
+    fields = ['title', 'content', 'category', 'img']
     template_name = 'posts/edit.html'
     context_object_name = 'post'
     success_url = reverse_lazy('blog:list')
@@ -65,6 +66,11 @@ class PostEdit(LoginRequiredMixin, UpdateView):
 
         object = get_object_or_404(Posts, id=self.kwargs['post_id'])
         return object
+    
+    def form_valid(self, form):
+        form.instance.writer = self.request.user
+        form.save()
+        return super().form_valid(form)
 
 
 class PostDelete(DeleteView):

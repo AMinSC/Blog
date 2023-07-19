@@ -6,7 +6,7 @@
     <h2 class="main-title">글쓰기</h2>
     <p class="main-desc">내용을 입력 해주세요.</p>
 
-    <form action="{% url 'blog:write' %}" method="post">
+    <form action="{% url 'blog:write' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <table class="table write">
             <colgroup>

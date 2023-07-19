@@ -23,7 +23,6 @@
             </select>
             <button type="submit">검색</button>
         </form>
-        
     </div>
 
     <!-- 게시판 리스트 -->
@@ -40,6 +39,7 @@
         <thead class="table-light">
             <tr>
                 <th>카테고리</th>
+                <th>조회수</th>
                 <th>제목</th>
                 <th>내용</th>
                 <th>작성자</th>
@@ -50,6 +50,7 @@
         {% for post in posts %}
             <tr>
                 <td>{{ post.category }}</td>
+                <td>{{ post.hit }}</td>
                 <td><a href="{% url 'blog:detail' post_id=post.pk %}" class="btn">{{ post.title }}</a></td>
                 <td>{{ post.content }}</td>
                 <td>{{ post.writer }}</td>

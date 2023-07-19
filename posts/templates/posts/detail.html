@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{{ post.update_counter }}
     <h1>제목: {{ post.title }}</h1>
 
     {% if post.writer == request.user %}
@@ -13,7 +14,11 @@
     {% endif %}
 
     <p>내용: {{ post.content }}</p>
+    <!-- {% if post.img %} -->
+    <img src="{{ post.img.url }}" alt="image" width="700">
+    {% endif %}
     <p>작성자: {{ post.writer }}</p>
     <p>작성일: {{ post.created_at }}</p>
+    <p>조회수: {{ post.hit }}</p>
     <hr>
 {% endblock %}
