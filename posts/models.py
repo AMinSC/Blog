@@ -15,3 +15,11 @@ class Posts(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PostsHitsImg(models.Model):
+    img = models.ImageField(blank=True, null=True)
+    views = models.IntegerField(max_length=10)
+
+    def __str__(self):
+        return self.title
