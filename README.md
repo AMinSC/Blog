@@ -76,13 +76,14 @@ Django learning with blog
         - models.py : (upload_to="")
             ![settings](/asset/post_img.png)
 
+        - urls : 기존 urlpatterns에서 static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        
         - html : (form태그 속성중 enctype="multipart/form-data")
             | type | 내용 |
             |:---:|:------:|
             |`application/x-www-form-urlencoded`|default값으로 모든 문자가 전송되기 전에 인코딩됨(공백은 +, 특수문자는 ASCII HEX)|
             |`multipart/form-data`|바이너리 데이터를 효율적으로 전송할 수 있으나 웹에서 많이 사용되는 텍스트로만 이루어진 POST 전송은 오히려 MIME 헤더가 추가되기 때문에 오버 헤드가 발생|
             |`text/plain`|공백과 일반 텍스트는 가능하지만, 특수문자는 인코딩되지 않아 현재는 거의 사용하지 않음|
-        - urls : 기존 urlpatterns에서 static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 - User
     - username : (unique=True)
