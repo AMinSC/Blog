@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="main">
+    <div class="container">
+        <h2 class="title">회원정보</h2>
+        <p class="description">
+            회원정보 변경이 가능합니다.
+        </p>
+
+        <form class="update" method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            </div>
+            <button class="submit-button" type="submit">정보 변경</button>
+            <a href="{% url 'blog:list' %}">돌아가기</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

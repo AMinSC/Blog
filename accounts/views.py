@@ -1,10 +1,13 @@
+from django.views.generic.edit import FormView, UpdateView
+from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView
-from django.views.generic.edit import FormView
-from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, ProfileForm
 
 
 class Registration(CreateView):
@@ -24,7 +27,7 @@ class Login(FormView):
     success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
-        username = form.cleaned_data.get('username')
+        username = form.cleaned_data.get('id')
         password = form.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
 
@@ -45,3 +48,13 @@ class Logout(View):
     def get(self, request):
         logout(request)
         return redirect('blog:list')
+
+
+class Update(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'accounts/update.html'
+    form_class = ProfileForm
+    success_url = reverse_lazy('blog:list')
+
+    def get_object(self):
+        return self.request.user
