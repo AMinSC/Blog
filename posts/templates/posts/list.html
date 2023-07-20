@@ -53,7 +53,13 @@
                 <td>{{ post.hit }}</td>
                 <td><a href="{% url 'blog:detail' post_id=post.pk %}" class="btn">{{ post.title }}</a></td>
                 <td>{{ post.content }}</td>
-                <td>{{ post.writer }}</td>
+                <td>
+                    {% if post.writer.nickname %}
+                        {{ post.writer.nickname }}
+                    {% else %}
+                        {{ post.writer }}
+                    {% endif %}
+                </td>
                 <td>{{ post.created_at }}</td>
             </tr>
         {% endfor %}
@@ -67,6 +73,8 @@
         <a href="{% url 'blog:list' %}" class="btn">전체 게시글보기</a>
         <a href="{% url 'accounts:login' %}" class="btn">로그인</a>
         <a href="{% url 'accounts:logout' %}" class="btn">로그아웃</a>
+        <a href="{% url 'accounts:register' %}" class="btn">회원가입</a>
+        <a href="{% url 'accounts:update' %}" class="btn">회원 정보수정</a>
     </div>
 </div>
 {% endblock %}

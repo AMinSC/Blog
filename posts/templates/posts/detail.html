@@ -14,10 +14,17 @@
     {% endif %}
 
     <p>내용: {{ post.content }}</p>
-    <!-- {% if post.img %} -->
-    <img src="{{ post.img.url }}" alt="image" width="700">
+    {% if post.img %}
+        <img src="{{ post.img.url }}" alt="image" width="700">
     {% endif %}
-    <p>작성자: {{ post.writer }}</p>
+    <p>
+        작성자: 
+        {% if post.writer.nickname %}
+            {{ post.writer.nickname }}
+        {% else %}
+            {{ post.writer }}
+        {% endif %}
+    </p>
     <p>작성일: {{ post.created_at }}</p>
     <p>조회수: {{ post.hit }}</p>
     <hr>
