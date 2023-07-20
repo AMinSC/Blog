@@ -5,12 +5,12 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Posts
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 
 # Create your views here.
 class PostView(ListView):
-    model = Posts
+    model = Post
     template_name = 'posts/list.html'
     context_object_name = 'posts'
 
@@ -22,13 +22,13 @@ class PostView(ListView):
 
 
 class PostDetail(DetailView):
-    model = Posts
+    model = Post
     template_name = 'posts/detail.html'
     context_object_name = 'post'
 
     def get_object(self):
         try:
-            object = get_object_or_404(Posts, id=self.kwargs['post_id'])
+            object = get_object_or_404(Post, id=self.kwargs['post_id'])
             return object
         except Http404:
             return None
@@ -43,7 +43,7 @@ class PostDetail(DetailView):
 
 class PostWrite(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('accounts:login')
-    model = Posts
+    model = Post
     fields = ['title', 'content', 'category', 'img']
     template_name = 'posts/write.html'
     success_url = reverse_lazy('blog:list')
@@ -56,7 +56,7 @@ class PostWrite(LoginRequiredMixin, CreateView):
 
 class PostEdit(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('accounts:login')
-    model = Posts
+    model = Post
     fields = ['title', 'content', 'category', 'img']
     template_name = 'posts/edit.html'
     context_object_name = 'post'
@@ -64,7 +64,7 @@ class PostEdit(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
 
-        object = get_object_or_404(Posts, id=self.kwargs['post_id'])
+        object = get_object_or_404(Post, id=self.kwargs['post_id'])
         return object
     
     def form_valid(self, form):
@@ -74,22 +74,22 @@ class PostEdit(LoginRequiredMixin, UpdateView):
 
 
 class PostDelete(DeleteView):
-    model = Posts
+    model = Post
     success_url = reverse_lazy('blog:list')
 
     def get_object(self):
 
-        object = get_object_or_404(Posts, id=self.kwargs['post_id'])
+        object = get_object_or_404(Post, id=self.kwargs['post_id'])
         return object
 
 # ?뒤에 커리문 처리 예정
 class PostSerach(ListView):
-    model = Posts
+    model = Post
     template_name = 'posts/list.html'
-    context_object_name = 'posts'
+    context_object_name = 'post'
     
     def get_queryset(self):
-        queryset = Posts.objects.all()
+        queryset = Post.objects.all()
 
         tag = self.request.GET.get('tag', '')
         category = self.request.GET.get('category', '')
@@ -112,3 +112,18 @@ class PostSerach(ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Blog'
         return context
+    
+
+class CommentWrite(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'posts/detail.html'
+    context_object_name = 'comment'
+
+    def form_valid(self, form):
+        form.instance.writer = self.request.user
+        form.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('comment_list')

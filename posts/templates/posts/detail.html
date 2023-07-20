@@ -1,9 +1,32 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 {{ post.update_counter }}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/table.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
+</head>
     <h1>제목: {{ post.title }}</h1>
 
+    
+    <p>내용: {{ post.content }}</p>
+    {% if post.img %}
+    <img src="{{ post.img.url }}" alt="image" width="700">
+    {% endif %}
+    <p>
+        작성자: 
+        {% if post.writer.nickname %}
+        {{ post.writer.nickname }}
+        {% else %}
+        {{ post.writer }}
+        {% endif %}
+    </p>
+    <p>작성일: {{ post.created_at }}</p>
+    <p>조회수: {{ post.hit }}</p>
+    <hr>
     {% if post.writer == request.user %}
     <a href="{% url 'blog:edit' post.id %}" class="btn">수정</a>
     <form action="{% url 'blog:delete' post.id %}" method="post">
@@ -12,20 +35,4 @@
     </form>
     <a href="{% url 'blog:list' %}">돌아가기</a>
     {% endif %}
-
-    <p>내용: {{ post.content }}</p>
-    {% if post.img %}
-        <img src="{{ post.img.url }}" alt="image" width="700">
-    {% endif %}
-    <p>
-        작성자: 
-        {% if post.writer.nickname %}
-            {{ post.writer.nickname }}
-        {% else %}
-            {{ post.writer }}
-        {% endif %}
-    </p>
-    <p>작성일: {{ post.created_at }}</p>
-    <p>조회수: {{ post.hit }}</p>
-    <hr>
 {% endblock %}

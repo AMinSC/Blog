@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/table.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/list.view' %}">
+</head>
 <div class="main">
     <h1 class="main-title">
         {{ title }}
@@ -26,7 +33,6 @@
     </div>
 
     <!-- 게시판 리스트 -->
-    {% if posts %}
     <table class="table table-bordered">
         <colgroup>
             <col style="width: 40px">
@@ -47,6 +53,7 @@
             </tr>
         </thead>
         <tbody>
+        {% if posts %}
         {% for post in posts %}
             <tr>
                 <td>{{ post.category }}</td>
@@ -64,17 +71,13 @@
             </tr>
         {% endfor %}
         </tbody>
+        {% else %}
+            <p>작성된 게시물이 없습니다.</p>
+        {% endif %}
     </table>
-    {% else %}
-        <p>작성된 게시물이 없습니다.</p>
-    {% endif %}
     <div class="btn-group">
         <a href="{% url 'blog:write' %}" class="btn">글쓰기</a>
         <a href="{% url 'blog:list' %}" class="btn">전체 게시글보기</a>
-        <a href="{% url 'accounts:login' %}" class="btn">로그인</a>
-        <a href="{% url 'accounts:logout' %}" class="btn">로그아웃</a>
-        <a href="{% url 'accounts:register' %}" class="btn">회원가입</a>
-        <a href="{% url 'accounts:update' %}" class="btn">회원 정보수정</a>
     </div>
 </div>
 {% endblock %}
