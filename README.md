@@ -60,6 +60,7 @@ Django learning with blog
     - cetegory
         - category_choices = (('일반', '일반'), ('공지사항', '공지사항'))
         - category = models.CharField(max_length=20, choices=category_choices)
+        - ![settings](/asset/6.png)
     - created_at : (auto_now_add=True)
     - updated_at : (auto_now=True)
     - hit
