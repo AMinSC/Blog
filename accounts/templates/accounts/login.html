@@ -13,11 +13,16 @@
 
         <form class="login" method="post" action="." enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <div>
-                <input type="checkbox" id="save-id" name="saveId">
-                <label for="save-id">아이디 저장</label>
+            {% for field in form %}
+            <div class="form-group">                                                           
+                <label for="{{field.id_for_label }}">{{field.label}}:</label>
+                <input type="{{field.field.widget.input_type}}" class="form-control" id="{{field.id_for_label }}"
+                            placeholder="{{field.label}}" name="{{field.name}}"/>
             </div>
+            {% if field.errors %}                                                              (3)
+            <span style="color: red">{{field.errors}}</span>
+            {% endif %}
+            {% endfor %}
             <button class="submit-button" type="submit">로그인</button>
             <a href="{% url 'blog:list' %}">돌아가기</a>
         </form>

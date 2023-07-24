@@ -33,6 +33,6 @@
         {% csrf_token %}
         <input type="submit" value="삭제" class="btn">
     </form>
-    <a href="{% url 'blog:list' %}">돌아가기</a>
     {% endif %}
+    <a href="{% url 'blog:list' %}" class="button">돌아가기</a>
 {% endblock %}

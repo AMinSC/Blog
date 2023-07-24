@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/list.view.css' %}">
 
 {% block content %}
 <head>
@@ -9,9 +11,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/list.view' %}">
 </head>
 <div class="main">
-    <h1 class="main-title">
+    <h2 class="main-title">
         {{ title }}
-    </h1>
+    </h2>
 
     <div>
         <form class="search-form" method="get" action="{% url 'blog:search' %}">
@@ -76,8 +78,12 @@
         {% endif %}
     </table>
     <div class="btn-group">
-        <a href="{% url 'blog:write' %}" class="btn">글쓰기</a>
-        <a href="{% url 'blog:list' %}" class="btn">전체 게시글보기</a>
+        {% if user.is_active %}
+        <a href="{% url 'blog:write' %}" class="button">
+            <img src="{% static './assets/icon-modify-white.svg' %}" alt="" />
+            <span>글쓰기</span>
+        </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
