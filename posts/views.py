@@ -86,7 +86,7 @@ class PostDelete(DeleteView):
 class PostSerach(ListView):
     model = Post
     template_name = 'posts/list.html'
-    context_object_name = 'post'
+    context_object_name = 'posts'
     
     def get_queryset(self):
         queryset = Post.objects.all()
@@ -95,7 +95,7 @@ class PostSerach(ListView):
         category = self.request.GET.get('category', '')
 
         if tag:
-            queryset = queryset.filter(title__contains=tag)
+            queryset = queryset.filter(title__contains=tag) | queryset.filter(content__contains=tag)
         if category:
             queryset = queryset.filter(category=category)
         

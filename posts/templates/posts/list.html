@@ -14,7 +14,7 @@
     </h1>
 
     <div>
-        <form class="search-form" method="get" action="{% url 'blog:search' 'tag' %}">
+        <form class="search-form" method="get" action="{% url 'blog:search' %}">
             <label for="category" class="a11y-hidden">카테고리</label>
             <select id="category" name="category">
                 <option value="">전체</option>
@@ -22,7 +22,7 @@
                 <option value="일반">일반</option>
             </select>
             <label for="tag" class="a11y-hidden">Search</label>
-            <input id="tag" type="search" name="tag" placeholder="Please enter a search term">
+            <input id="tag" type="search" name="tag" placeholder="제목 + 내용 검색">
             <label for="sort" class="a11y-hidden">정렬</label>
             <select id="sort" name="sort">
                 <option value="oldest">날짜 오름차순</option>
