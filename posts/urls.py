@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostView, PostDetail, PostWrite, PostEdit, PostDelete, PostSerach, CommentWrite
+from .views import PostView, PostDetail, PostWrite, PostEdit, PostDelete, PostSerach, CommentWrite, CommentDelete
 
 
 app_name = 'blog'
@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:post_id>/delete/', PostDelete.as_view(), name='delete'),
     path('search/', PostSerach.as_view(), name='search'),
     path('<int:post_id>/comment/write/', CommentWrite.as_view(), name='cm-write'),
+    path('<int:post_id>/comment/<int:pk>/delete/', CommentDelete.as_view(), name='cm-delete'),
 ]

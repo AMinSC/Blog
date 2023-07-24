@@ -1,5 +1,6 @@
-from django.http import Http404
-from django.urls import reverse_lazy
+from typing import Any
+from django.http import Http404, HttpRequest, HttpResponse
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -34,12 +35,11 @@ class PostDetail(DetailView):
         except Http404:
             return None
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if not self.object:
-            return render(request, 'posts/not_found.html', {})
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        context['comments'] = Comment.objects.filter(post=self.get_object())
+        return context
 
 
 class PostWrite(LoginRequiredMixin, CreateView):
@@ -119,12 +119,18 @@ class CommentWrite(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
     template_name = 'posts/detail.html'
-    context_object_name = 'comments'
 
     def form_valid(self, form):
         form.instance.writer = self.request.user
-        form.save()
+        form.instance.post = Post.objects.get(pk=self.kwargs['post_id'])
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse_lazy('comment_list')
+        return reverse_lazy('blog:detail', kwargs={'post_id': self.object.post.pk})
+
+
+class CommentDelete(DeleteView):
+    model = Comment
+
+    def get_success_url(self):
+        return reverse('blog:detail', kwargs={'post_id': self.object.post.id})

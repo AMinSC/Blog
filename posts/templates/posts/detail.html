@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% load static %}
 
 {% block content %}
@@ -9,8 +11,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
 </head>
     <h1>제목: {{ post.title }}</h1>
-
-    
     <p>내용: {{ post.content }}</p>
     {% if post.img %}
     <img src="{{ post.img.url }}" alt="image" width="700">
@@ -34,17 +34,26 @@
     </form>
     {% endif %}
     <h3>댓글</h3>
-    <form action="{% url 'blog:cm-write' pk=post_id %}" method="post">
+    {% for comment in comments %}
+        <div>
+            <p>{{ comment.writer }}: {{ comment.content }}</p>
+            {% if comment.writer == request.user %}
+            <form action="{% url 'blog:cm-delete' post_id=post.id pk=comment.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="delete" class="btn">
+            </form>
+            
+            {% endif %}
+        </div>
+        <hr>
+    {% endfor %}
+    
+    <form action="{% url 'blog:cm-write' post_id=post.id %}" method="post">
         {% csrf_token %}
-        {% if comment_form.errors %}
-            {% with form=comment_form %}
-                {% include 'blog/form_error.html' %}
-            {% endwith %}
-        {% else %}
-            {{ comment_form.content }}
-        {% endif %}
+        {{ comment_form.as_p }}
         <input type="submit" value="{% trans 'Submit' %}">
     </form>
+
     <br>
     <a href="{% url 'blog:list' %}" class="button">돌아가기</a>
 {% endblock %}
