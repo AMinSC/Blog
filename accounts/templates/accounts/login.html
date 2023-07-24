@@ -23,6 +23,11 @@
             <span style="color: red">{{field.errors}}</span>
             {% endif %}
             {% endfor %}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
             <button class="submit-button" type="submit">로그인</button>
             <a href="{% url 'blog:list' %}">돌아가기</a>
         </form>

@@ -16,6 +16,13 @@ class RegisterForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label="아이디")
+
+    error_messages = {
+        'invalid_login': (
+            f"올바른 아이디와 비밀번호를 입력하십시오. 두 필드 모두 대문자와 소문자를 구별합니다."
+        ),
+        'inactive': ("This account is inactive."),
+    }
     
     class Meta:
         model = User
