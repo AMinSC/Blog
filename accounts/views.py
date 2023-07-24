@@ -1,14 +1,13 @@
 from typing import Any, Dict
-from django.views.generic.edit import FormView, UpdateView
+from django.views.generic.edit import FormView
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.views import View
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from .forms import RegisterForm, LoginForm, ProfileForm
+from .forms import RegisterForm, LoginForm, ProfileForm, CustomPasswordChangeForm
 
 
 class Registration(CreateView):
@@ -67,3 +66,16 @@ class Update(LoginRequiredMixin, FormView):
         form.save()
         update_session_auth_hash(self.request, self.request.user)
         return super().form_valid(form)
+
+
+class PasswordChange(PasswordChangeView):
+    form_class = CustomPasswordChangeForm
+    success_url = reverse_lazy('blog:list')
+    template_name = 'accounts/change_password.html'
+
+
+Registration = Registration.as_view()
+Login = Login.as_view()
+Logout = Logout.as_view()
+Update = Update.as_view()
+PasswordChange = PasswordChange.as_view()
