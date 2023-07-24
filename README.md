@@ -119,6 +119,8 @@ Django learning with blog
     ![settings](/asset/5.png)
 
 ## 6. 개선사항
-- 댓글 작성(대댓글)
+- ~~댓글 작성(대댓글)~~
+    - 꾸며주기
+    - blog:list에서 post당 댓글 갯수 표시해주기
 - 카테고리 고도화
     - 일반, 공지사항 -> 주제별 카테고리 (예) 음악, 영화 등)

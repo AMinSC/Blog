@@ -34,3 +34,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
+
+class ReComment(models.Model):
+    parent = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    content = models.CharField(max_length=255)
+    updated_at = models.DateTimeField(auto_now=True)

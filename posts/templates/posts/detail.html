@@ -36,19 +36,30 @@
     <h3>댓글</h3>
     {% for comment in comments %}
         <div>
-            <p>{{ comment.writer }}: {{ comment.content }}</p>
-            {% if comment.writer == request.user %}
+            <p><strong>{{ comment.writer.username }}:</strong> {{ comment.content }}</p>
             <form action="{% url 'blog:cm-delete' post_id=post.id pk=comment.id %}" method="post">
                 {% csrf_token %}
-                <input type="submit" value="delete" class="btn">
+                <input type="submit" value="Delete" class="btn">
             </form>
-            
-            {% endif %}
+
+            <h4>대댓글</h4>
+            {% for recomment in comment.recomment_set.all %}
+                <div>
+                    <p><strong>{{ recomment.writer.username }}:</strong> {{ recomment.content }}</p>
+                </div>
+            {% endfor %}
+
+            <h5>대댓글 작성</h5>
+            <form action="{% url 'blog:recomment-write' post_id=post.id comment_id=comment.id %}" method="post">
+                {% csrf_token %}
+                {{ recomment_form.as_p }}
+                <input type="submit" value="{% trans 'Submit' %}">
+            </form>
         </div>
-        <hr>
     {% endfor %}
-    
-    <form action="{% url 'blog:cm-write' post_id=post.id %}" method="post">
+
+    <h3>Write a comment</h3>
+    <form id="comment-form" action="{% url 'blog:cm-write' post_id=post.id %}" method="post">
         {% csrf_token %}
         {{ comment_form.as_p }}
         <input type="submit" value="{% trans 'Submit' %}">

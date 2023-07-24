@@ -6,8 +6,8 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Post, Comment
-from .forms import PostForm, CommentForm
+from .models import Post, Comment, ReComment
+from .forms import PostForm, CommentForm, ReCommentForm
 
 # Create your views here.
 class PostView(ListView):
@@ -37,8 +37,11 @@ class PostDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        post_id = self.kwargs.get('post_id')
+        context['post'] = get_object_or_404(Post, pk=post_id)
+        context['comments'] = Comment.objects.filter(post_id=post_id)
         context['comment_form'] = CommentForm()
-        context['comments'] = Comment.objects.filter(post=self.get_object())
+        context['recomment_form'] = ReCommentForm()
         return context
 
 
@@ -127,6 +130,20 @@ class CommentWrite(LoginRequiredMixin, CreateView):
     
     def get_success_url(self):
         return reverse_lazy('blog:detail', kwargs={'post_id': self.object.post.pk})
+
+
+class ReCommentWrite(LoginRequiredMixin, CreateView):
+    model = ReComment
+    form_class = ReCommentForm
+    template_name = 'posts/detail.html'
+
+    def form_valid(self, form):
+        form.instance.writer = self.request.user
+        form.instance.parent = get_object_or_404(Comment, pk=self.kwargs['comment_id'])
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('blog:detail', kwargs={'post_id': self.object.parent.post.pk})
 
 
 class CommentDelete(DeleteView):
