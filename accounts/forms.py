@@ -22,19 +22,18 @@ class LoginForm(AuthenticationForm):
         fields = ['username', 'password']
 
 
-class ProfileForm(PasswordChangeForm):
+class ProfileForm(forms.ModelForm):
+    username = forms.CharField(max_length=100, disabled=True, label="아이디")
     nickname = forms.CharField(max_length=100, required=False)
     email = forms.EmailField(max_length=255, required=False)
 
     class Meta:
         model = User
-        fields = ['old_password', 'new_password1', 'new_password2', 'nickname', 'email']
+        fields = ['username', 'nickname', 'email']
 
     def save(self, commit=True):
-        # password is updated by the original save method
         user = super().save(commit=False)
         
-        # here we update the additional fields
         user.nickname = self.cleaned_data.get('nickname')
         user.email = self.cleaned_data.get('email')
         
