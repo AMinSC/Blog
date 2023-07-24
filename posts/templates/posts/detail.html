@@ -58,7 +58,7 @@
         </div>
     {% endfor %}
 
-    <h3>Write a comment</h3>
+    <h3>댓글 작성</h3>
     <form id="comment-form" action="{% url 'blog:cm-write' post_id=post.id %}" method="post">
         {% csrf_token %}
         {{ comment_form.as_p }}

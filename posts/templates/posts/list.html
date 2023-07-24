@@ -37,12 +37,12 @@
     <!-- 게시판 리스트 -->
     <table class="table table-bordered">
         <colgroup>
-            <col style="width: 40px">
-            <col style="width: 60px">
-            <col>
-            <col style="width: 100px">
-            <col style="width: 120px">
-            <col style="width: 100px">
+            <col style="width: 10%">
+            <col style="width: 10%">
+            <col style="width: 20%">
+            <col style="width: 20%">
+            <col style="width: 10%">
+            <col style="width: 10%">
         </colgroup>
         <thead class="table-light">
             <tr>
@@ -60,7 +60,7 @@
             <tr>
                 <td>{{ post.category }}</td>
                 <td>{{ post.hit }}</td>
-                <td><a href="{% url 'blog:detail' post_id=post.pk %}" class="btn">{{ post.title }}</a></td>
+                <td><a href="{% url 'blog:detail' post_id=post.pk %}" class="btn">{{ post.title }} : {{ post.comment_set.count }}</a></td>
                 <td>{{ post.content }}</td>
                 <td>
                     {% if post.writer.nickname %}

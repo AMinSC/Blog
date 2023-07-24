@@ -8,7 +8,7 @@ Django learning with blog
     - ~~2 단계~~
     - 3 단계
         - ~~프로필 추가 및 수정~~
-        - 댓글 기능(Create, Delete, Re Comments)
+        - ~~댓글 기능(Create, Delete, Re Comments)~~
         - 배포(AWS Lightsail, nginx, uwsgi, gunicorn)
     - django-bootstrap5로 Templates적용
 
@@ -66,7 +66,7 @@ Django learning with blog
     - cetegory
         - category_choices = (('일반', '일반'), ('공지사항', '공지사항'))
         - category = models.CharField(max_length=20, choices=category_choices)
-        - ![settings](/asset/6.png)
+        - ![settings](/asset/db-table.png)
     - created_at : (auto_now_add=True)
     - updated_at : (auto_now=True)
     - hit
@@ -101,26 +101,34 @@ Django learning with blog
 - Comment
 
 
-## 5. 메인
+## 5. 구현
 
-1. 블로그 리스트(닉네임 변경전 아이디 노출)
+1. 블로그 메인 화면
     ![settings](/asset/1.png)
 
-2. 닉네임 설정 후 닉네임 노출
+2. 로그인
     ![settings](/asset/2.png)
 
-3. 이미지 노출 및 조회수
+3. 블로그 리스트
     ![settings](/asset/3.png)
 
-4. 로그인
+4. 회원정보 수정(닉네임, 이메일)
     ![settings](/asset/4.png)
 
-5. 회원정보 수정
+5. 회원정보 수정(비밀번호)
     ![settings](/asset/5.png)
+
+6. 글작성(이미지)
+    ![settings](/asset/6.png)
+
+7. 게시글 상세 페이지
+    ![settings](/asset/7.png)
 
 ## 6. 개선사항
 - ~~댓글 작성(대댓글)~~
-    - 꾸며주기
-    - blog:list에서 post당 댓글 갯수 표시해주기
+    - 꾸며주기(게시판 간격 등)
+    - ~~blog:list에서 post당 댓글 갯수 표시해주기~~
+        - 블로그 리스트에서 댓글 개수는 확인, 대댓글 개수는 확인 불가
+- 블로그 리스트 간격 조정
 - 카테고리 고도화
     - 일반, 공지사항 -> 주제별 카테고리 (예) 음악, 영화 등)
