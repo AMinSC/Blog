@@ -34,9 +34,8 @@
 				</h1>
 				{% if user.is_active %}
 				<ul>
-					<!-- 로그인 -->
 					<li class="profile-img">
-						<a href="#">
+						<a href="{% url 'accounts:update' %}">
 							<img src="{% static './assets/profile.jpg' %}" alt="My Page" />
 						</a>
 					</li>
