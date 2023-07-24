@@ -3,7 +3,6 @@
 {% load static %}
 
 {% block content %}
-{{ post.update_counter }}
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/table.css' %}">
@@ -19,9 +18,9 @@
     <p>
         작성자: 
         {% if post.writer.nickname %}
-        {{ post.writer.nickname }}
+            {{ post.writer.nickname }}
         {% else %}
-        {{ post.writer }}
+            {{ post.writer }}
         {% endif %}
     </p>
     <p>작성일: {{ post.created_at }}</p>
@@ -34,5 +33,18 @@
         <input type="submit" value="삭제" class="btn">
     </form>
     {% endif %}
+    <h3>댓글</h3>
+    <form action="{% url 'blog:cm-write' pk=post_id %}" method="post">
+        {% csrf_token %}
+        {% if comment_form.errors %}
+            {% with form=comment_form %}
+                {% include 'blog/form_error.html' %}
+            {% endwith %}
+        {% else %}
+            {{ comment_form.content }}
+        {% endif %}
+        <input type="submit" value="{% trans 'Submit' %}">
+    </form>
+    <br>
     <a href="{% url 'blog:list' %}" class="button">돌아가기</a>
 {% endblock %}

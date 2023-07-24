@@ -76,7 +76,8 @@ Django learning with blog
             self.save()
         ```
 
-        `{{ post.update_counter }}`
+        ~~`{{ post.update_counter }}`~~
+        view클래스에서 메서드 호출해주기
 
     - img (Pillow)
         - models.py : (upload_to="")
@@ -118,7 +119,6 @@ Django learning with blog
     ![settings](/asset/5.png)
 
 ## 6. 개선사항
-- 회원정보 수정 : 정보 + 비밀번호 변경 -> 개별로 변경
 - 댓글 작성(대댓글)
 - 카테고리 고도화
     - 일반, 공지사항 -> 주제별 카테고리 (예) 음악, 영화 등)

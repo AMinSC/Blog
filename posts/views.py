@@ -29,6 +29,7 @@ class PostDetail(DetailView):
     def get_object(self):
         try:
             object = get_object_or_404(Post, id=self.kwargs['post_id'])
+            object.update_counter()
             return object
         except Http404:
             return None
@@ -118,7 +119,7 @@ class CommentWrite(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
     template_name = 'posts/detail.html'
-    context_object_name = 'comment'
+    context_object_name = 'comments'
 
     def form_valid(self, form):
         form.instance.writer = self.request.user
