@@ -1,16 +1,19 @@
 # Django-blog
 Django learning with blog
 
+
 ## 1. 목적
-- 요구사항 모두 구현해보기
-    - ~~0 단계~~
-    - ~~1 단계~~
-    - ~~2 단계~~
-    - 3 단계
-        - ~~프로필 추가 및 수정~~
-        - ~~댓글 기능(Create, Delete, Re Comments)~~
-        - 배포(AWS Lightsail, nginx, uwsgi, gunicorn)
-    - django-bootstrap5로 Templates적용
+- 간단한 블로그
+    - 회원가입, 로그인, 로그아웃
+        - 회원정보 수정, 비밀번호 변경
+    - 게시글 CRUD 기능
+        - 인증(Authorization)
+            - 본인 작성 게시판, 댓글만 수정 및 삭제 가능
+        - 간단한 조회수 기능
+        - 이미지 로드
+        - 댓글, 대댓글 CRD
+    - AWS Lightsail로 배포
+
 
 ## 2. 개발환경
 
@@ -20,46 +23,65 @@ Django learning with blog
 
 그 외 자세한 버전은 requirements.txt를 참고 부탁드리겠습니다.
 
-## 3. 폴더 트리
+
+## 3. 배포환경
+
+- AWS Lightsail(ubuntu 22.04 LTS)
+    - Nginx 1.18.0
+    - uWSGI 2.0.21
+
+- [배포사이트](http://3.39.109.55)
+    - 아직 도메인주소를 구매하지 않아, 포트번호로 되어 있습니다.
+
+
+## 4. 폴더 트리
 ```
-├─.vscode
-├─accounts
-│  ├─migrations
-│  │  └─__pycache__
-│  ├─templates
-│  │  └─accounts
-│  └─__pycache__
-├─blog
-│  └─__pycache__
-├─media
-├─posts
-│  ├─migrations
-│  │  └─__pycache__
-│  ├─templates
-│  │  └─posts
-│  └─__pycache__
-├─static
-│  ├─css
-│  └─img
-├─staticfiles
-│  └─admin
-│      ├─css
-│      │  └─vendor
-│      │      └─select2
-│      ├─img
-│      │  └─gis
-│      └─js
-│          ├─admin
-│          └─vendor
-│              ├─jquery
-│              ├─select2
-│              │  └─i18n
-│              └─xregexp
-├─templates
-└─venv
+.
+├── 8000
+├── README.md
+├── accounts
+│   ├── migrations
+│   ├── models.py
+│   ├── static
+│   └── templates
+├── asset
+├── blog
+├── db.sqlite3
+├── manage.py
+├── media
+├── posts
+│   ├── migrations
+│   ├── static
+│   └── templates
+├── requirements.txt
+├── static
+│   ├── admin
+│   │   ├── css
+│   │   ├── img
+│   │   └── js
+│   ├── assets
+│   ├── css
+│   ├── images
+│   └── img
+├── staticfile
+│   ├── admin
+│   │   ├── css
+│   │   ├── img
+│   │   └── js
+│   ├── assets
+│   ├── css
+│   ├── images
+│   └── img
+├── staticfiles
+│   └── admin
+│       ├── css
+│       ├── img
+│       └── js
+├── templates
+└── venv
 ```
 
-## 4. ERD
+## 5. ERD
 ![ERD](/asset/ERD.png)
 
 - Post
@@ -99,9 +121,13 @@ Django learning with blog
     - updated_at : (auto_now=True)
 
 - Comment
+    - post, writer : ForeignKey
+
+- ReComment
+    - parent : ForeignKey
 
 
-## 5. 구현
+## 6. 구현
 
 1. 블로그 메인 화면
     ![settings](/asset/1.png)
@@ -124,7 +150,7 @@ Django learning with blog
 7. 게시글 상세 페이지
     ![settings](/asset/7.png)
 
-## 6. 개선사항
+## 7. 개선사항
 - ~~댓글 작성(대댓글)~~
     - 꾸며주기(게시판 간격 등)
     - ~~blog:list에서 post당 댓글 갯수 표시해주기~~
