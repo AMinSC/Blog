@@ -45,14 +45,19 @@
 							<span>Logout</span>
 						</a>
 					</li>
-					{% else %}
+				{% else %}
 					<li>
 						<a href="{% url 'accounts:login' %}" class="button">
 							<span>Login</span>
 						</a>
 					</li>
-					{% endif %}
+					<li>
+						<a href="{% url 'accounts:register' %}" class="button">
+							<span>Register</span>
+						</a>
+					</li>
 				</ul>
+				{% endif %}
 			</div>
 		</header>
 		<!--// header -->
