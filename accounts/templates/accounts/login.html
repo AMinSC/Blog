@@ -31,7 +31,9 @@
             <button class="submit-button" type="submit">로그인</button>
             <ui>
                 <li>
-                    <a href="{% url 'blog:list' %}">돌아가기</a>
+                    <a href="{% url 'blog:list' %}">
+                        <span>돌아가기</span>
+                    </a>
                 </li>
                 <li>
                     <a href="{% url 'accounts:register' %}" class="button">
