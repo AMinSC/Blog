@@ -32,8 +32,8 @@
 						<img src="{% static './assets/Logo.svg' %}" alt="My Blog" />
 					</a>
 				</h1>
-				{% if user.is_active %}
 				<ul>
+					{% if user.is_active %}
 					<li class="profile-img">
 						<a href="{% url 'accounts:update' %}">
 							<img src="{% static './assets/profile.jpg' %}" alt="My Page" />
@@ -45,7 +45,7 @@
 							<span>Logout</span>
 						</a>
 					</li>
-				{% else %}
+					{% else %}
 					<li>
 						<a href="{% url 'accounts:login' %}" class="button">
 							<span>Login</span>
@@ -56,8 +56,8 @@
 							<span>Register</span>
 						</a>
 					</li>
+					{% endif %}
 				</ul>
-				{% endif %}
 			</div>
 		</header>
 		<!--// header -->

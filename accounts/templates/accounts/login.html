@@ -29,12 +29,16 @@
             </div>
             {% endif %}
             <button class="submit-button" type="submit">로그인</button>
-            <a href="{% url 'blog:list' %}">돌아가기</a>
-            <li>
-                <a href="{% url 'accounts:register' %}" class="button">
-                    <span>Register</span>
-                </a>
-            </li>
+            <ui>
+                <li>
+                    <a href="{% url 'blog:list' %}">돌아가기</a>
+                </li>
+                <li>
+                    <a href="{% url 'accounts:register' %}" class="button">
+                        <span>Register</span>
+                    </a>
+                </li>
+            </ui>
         </form>
     </div>
 </div>
