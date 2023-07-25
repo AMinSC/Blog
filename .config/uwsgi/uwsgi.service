@@ -1,0 +1,15 @@
+[Unit]
+Description=uWSGI service
+After=syslog.target
+
+[Service]
+ExecStart=/srv/Django-blog/venv/bin/uwsgi -i /srv/Django-blog/.config/uwsgi/blog.ini
+
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccsee=all
+
+[Install]
+WantedBy=multi-user.target
