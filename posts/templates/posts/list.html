@@ -60,7 +60,7 @@
             <tr>
                 <td>{{ post.category }}</td>
                 <td>{{ post.hit }}</td>
-                <td><a href="{% url 'blog:detail' post_id=post.pk %}" class="btn">{{ post.title }} : {{ post.comment_set.count }}</a></td>
+                <td><a href="{% url 'blog:detail' post_id=post.pk %}" class="btn">{{ post.title }} [{{ post.comment_set.count }}]</a></td>
                 <td>{{ post.content }}</td>
                 <td>
                     {% if post.writer.nickname %}
