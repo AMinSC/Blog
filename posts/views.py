@@ -151,3 +151,14 @@ class CommentDelete(DeleteView):
 
     def get_success_url(self):
         return reverse('blog:detail', kwargs={'post_id': self.object.post.id})
+
+
+PostView = PostView.as_view()
+PostDetail = PostDetail.as_view()
+PostWrite = PostWrite.as_view()
+PostEdit = PostEdit.as_view()
+PostDelete = PostDelete.as_view()
+PostSerach = PostSerach.as_view()
+CommentWrite = CommentWrite.as_view()
+ReCommentWrite = ReCommentWrite.as_view()
+CommentDelete = CommentDelete.as_view()
