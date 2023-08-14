@@ -132,6 +132,13 @@ class CommentWrite(LoginRequiredMixin, CreateView):
         return reverse_lazy('blog:detail', kwargs={'post_id': self.object.post.pk})
 
 
+class CommentDelete(DeleteView):
+    model = Comment
+
+    def get_success_url(self):
+        return reverse('blog:detail', kwargs={'post_id': self.object.post.id})
+
+
 class ReCommentWrite(LoginRequiredMixin, CreateView):
     model = ReComment
     form_class = ReCommentForm
@@ -146,11 +153,11 @@ class ReCommentWrite(LoginRequiredMixin, CreateView):
         return reverse_lazy('blog:detail', kwargs={'post_id': self.object.parent.post.pk})
 
 
-class CommentDelete(DeleteView):
-    model = Comment
+class ReCommentDelete(DeleteView):
+    model = ReComment
 
     def get_success_url(self):
-        return reverse('blog:detail', kwargs={'post_id': self.object.post.id})
+        return reverse('blog:detail', kwargs={'post_id': self.object.parent.post.id})
 
 
 PostView = PostView.as_view()
@@ -160,5 +167,6 @@ PostEdit = PostEdit.as_view()
 PostDelete = PostDelete.as_view()
 PostSerach = PostSerach.as_view()
 CommentWrite = CommentWrite.as_view()
-ReCommentWrite = ReCommentWrite.as_view()
 CommentDelete = CommentDelete.as_view()
+ReCommentWrite = ReCommentWrite.as_view()
+ReCommentDelete = ReCommentDelete.as_view()

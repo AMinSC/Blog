@@ -37,15 +37,23 @@
     {% for comment in comments %}
         <div>
             <p><strong>{{ comment.writer.username }}:</strong> {{ comment.content }}</p>
+	    {% if comment.writer == request.user %}
             <form action="{% url 'blog:cm-delete' post_id=post.id pk=comment.id %}" method="post">
                 {% csrf_token %}
-                <input type="submit" value="Delete" class="btn">
+                <input type="submit" value="삭제" class="btn">
             </form>
+	    {% endif %}
 
             <h4>대댓글</h4>
             {% for recomment in comment.recomment_set.all %}
                 <div>
                     <p><strong>{{ recomment.writer.username }}:</strong> {{ recomment.content }}</p>
+		    {% if recomment.writer == request.user %}
+		    <form action="{% url 'blog:recomment-delete' post_id=post.id pk=recomment.id %}" method="post">
+			{% csrf_token %}
+			<input type="submit" value="삭제" class="btn">
+		    </form>
+		    {% endif %}
                 </div>
             {% endfor %}
 
