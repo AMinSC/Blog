@@ -37,6 +37,10 @@ class Comment(models.Model):
 
 class ReComment(models.Model):
     parent = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    writer = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content
 
