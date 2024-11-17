@@ -1,5 +1,5 @@
-# Django-blog
-Django learning with blog
+# csharp-blog
+Django learning with blog -> Csharp migrations (.NET 9.0)
 
 
 ## 1. 목적
