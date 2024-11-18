@@ -80,13 +80,13 @@
 ```
 
 ## 5. ERD
-![ERD](/asset/ERD.png)
+![ERD](./asset/ERD.png)
 
 - Post
     - cetegory
         - category_choices = (('일반', '일반'), ('공지사항', '공지사항'))
         - category = models.CharField(max_length=20, choices=category_choices)
-        - ![settings](/asset/db-table.png)
+        - ![settings](./asset/db-table.png)
     - created_at : (auto_now_add=True)
     - updated_at : (auto_now=True)
     - hit
@@ -101,7 +101,7 @@
 
     - img (Pillow)
         - models.py : (upload_to="")
-            ![settings](/asset/post_img.png)
+            ![settings](./asset/post_img.png)
 
         - urls : 기존 urlpatterns에서 static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
         
@@ -128,25 +128,25 @@
 ## 6. 구현
 
 1. 블로그 메인 화면
-    ![settings](/asset/1.png)
+    ![settings](./asset/1.png)
 
 2. 로그인
-    ![settings](/asset/2.png)
+    ![settings](./asset/2.png)
 
 3. 블로그 리스트
-    ![settings](/asset/3.png)
+    ![settings](./asset/3.png)
 
 4. 회원정보 수정(닉네임, 이메일)
-    ![settings](/asset/4.png)
+    ![settings](./asset/4.png)
 
 5. 회원정보 수정(비밀번호)
-    ![settings](/asset/5.png)
+    ![settings](./asset/5.png)
 
 6. 글작성(이미지)
-    ![settings](/asset/6.png)
+    ![settings](./asset/6.png)
 
 7. 게시글 상세 페이지
-    ![settings](/asset/7.png)
+    ![settings](./asset/7.png)
 
 
 ## 7. 개선사항
